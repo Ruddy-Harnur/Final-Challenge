@@ -40,7 +40,7 @@ if __name__=='__main__':
     pv.show()
     pv.dtypes
     pv = pv.filter(pv["Year"] >= (2015)) \
-       .filter(pv["Year"] <= lit(2019))
+       .filter(pv["Year"] <= (2019))
     pv.show()
     #pv = pv.select(f.year(pv['Year']))
     pv = pv.na.drop()
@@ -65,9 +65,9 @@ if __name__=='__main__':
     pv = pv.withColumn("HN_int",(f.regexp_replace("House Number", "-", "")))
     pv = pv.withColumn("HN_int",regexp_replace(col("HN_int"), " ", ""))
     pv = pv.withColumn("HN_int", pv["HN_int"].cast(IntegerType()))
-    pv = pv.na.drop() \
-                     .select('Year','BOROCODE', 'street name', 'HN_int')
-    
+    pv = pv.na.drop()
+    pv = pv.select('Year','BOROCODE', 'street name', 'HN_int')
+    pv.show()
     df_centerline = spark.read.csv('hdfs:///tmp/bdm/nyc_cscl.csv', header = True, inferSchema = True)
     df_centerline = df_centerline.select('PHYSICALID', 'ST_LABEL','FULL_STREE', 'BOROCODE', 'L_LOW_HN', 'L_HIGH_HN', 'R_LOW_HN', 'R_HIGH_HN')
     
@@ -115,4 +115,4 @@ if __name__=='__main__':
     
     
     final_df = final_df.orderBy('PHYSICALID')
-    final_df.write.csv('y')
+    final_df.write.csv('z')
