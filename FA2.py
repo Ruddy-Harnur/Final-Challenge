@@ -3,6 +3,7 @@ from pyspark import SparkContext
 from pyspark.sql import SparkSession
 
 import pyspark.sql.functions as f 
+from datetime import datetime
 from pyspark.sql.functions import year, month, dayofmonth
 from pyspark.sql.window import Window
 from pyspark.sql.functions import lit
@@ -33,6 +34,7 @@ if __name__=='__main__':
     pv = pv.select('Issue Date', 'Violation County', 'Street Name', 'House Number')
     pv = pv.select(f.year(pv['Issue Date']).alias('Year'),
                    f.lower(pv['Street Name']).alias('Street Name'))
+    pv = pv.select('Year', (todate('Year', 'MM/dd/yyy')))
     pv = pv.filter(pv['Year']>=2015 & pv['Year']<=2019)              
     pv = pv.na.drop()
     borough_dict = {'NY':1, 'MAN':1, 'MH':1, 'NEWY':1, 'NEW':1, 'Y':1, "NY":1,
