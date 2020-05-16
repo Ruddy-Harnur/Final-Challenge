@@ -99,20 +99,21 @@ if __name__=='__main__':
     final_df = pivoted.join(broadcast(df_centerline), ['PHYSICALID'], how='right')
     final_df = final_df.select('PHYSICALID', '2015', '2016', '2017', '2018', '2019')
     final_df = final_df.na.fill(0)
-     
+    final_df.show() 
     
-    # def slope(a, b, c, d, e):
-        # X = ([2015, 2016, 2017, 2018, 2019])
-        # X = sm.add_constant(X)
-        # y = ([a, b, c, d, e])
-        # model = sm.OLS(y,X)
-        # #(y, X)
-        # results = model.fit()
-        # return((results.params[1]))
+    def slope(a, b, c, d, e):
+        X = ([2015, 2016, 2017, 2018, 2019])
+        X = sm.add_constant(X)
+        y = ([a, b, c, d, e])
+        model = sm.OLS(y,X)
+        #(y, X)
+        results = model.fit()
+        return((results.params[1]))
     
-    # final_df = final_df.withColumn('OLS', slope(final_df['2015'], final_df['2016'], final_df['2017'], 
-                                               # final_df['2018'], final_df['2019']))
+    final_df = final_df.withColumn('OLS', slope(final_df['2015'], final_df['2016'], final_df['2017'], 
+                                               final_df['2018'], final_df['2019']))
     
     
     final_df = final_df.orderBy('PHYSICALID')
-    final_df.write.csv('bb')
+    final_df.show()
+    final_df.write.csv('cc')
