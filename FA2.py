@@ -15,9 +15,9 @@ from pyspark.sql.functions import col, create_map, lit
 
 import numpy as np
 
-import statsmodels.api as sm
+#import statsmodels.api as sm
 
-import statsmodels.formula.api as smf
+#import statsmodels.formula.api as smf
 
 from pyspark.sql.functions import regexp_replace, col
 from pyspark.ml.regression import LinearRegression
