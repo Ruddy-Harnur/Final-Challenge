@@ -29,7 +29,7 @@ from pyspark.sql.functions import *
 if __name__=='__main__':
     sc = SparkContext()
     spark = SparkSession(sc)
-    pv = spark.read.csv(sys.argv[1], header = True,inferSchema = True)
+    pv = spark.read.csv('hdfs:///tmp/bdm/nyc_parking_violation/', header = True,inferSchema = True)
     pv = pv.select('Issue Date', 'Violation County', 'Street Name', 'House Number')
     pv = pv.select(f.year(pv['Issue Date']).alias('Year'),
                    f.lower(pv['Street Name']).alias('Street Name'))
@@ -47,7 +47,7 @@ if __name__=='__main__':
     pv = pv.na.drop() \
                      .select('Year','BOROCODE', 'street name', 'HN_int')
     
-    df_centerline = spark.read.csv(sys.argv[2], header = True, inferSchema = True)
+    df_centerline = spark.read.csv('hdfs:///tmp/bdm/nyc_cscl.csv', header = True, inferSchema = True)
     df_centerline = df_centerline.select('PHYSICALID', 'ST_LABEL','FULL_STREE', 'BOROCODE', 'L_LOW_HN', 'L_HIGH_HN', 'R_LOW_HN', 'R_HIGH_HN')
     
     df_centerline = df_centerline.withColumn("L_LOW_int",(f.regexp_replace("L_LOW_HN", "-", "")))
@@ -94,4 +94,4 @@ if __name__=='__main__':
     
     
     final_df = final_df.orderBy('PHYSICALID')
-    final_df.write.csv(sys.argv[3])
+    final_df.write.csv(sys.argv[1])
