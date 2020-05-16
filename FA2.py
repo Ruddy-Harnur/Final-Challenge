@@ -15,7 +15,7 @@ from itertools import chain
 from pyspark.sql.functions import col, create_map, lit
 
 import numpy as np
-spark.debug.maxToStringFields=100
+#spark.debug.maxToStringFields=100
 #import statsmodels.api as sm
 
 #import statsmodels.formula.api as smf
