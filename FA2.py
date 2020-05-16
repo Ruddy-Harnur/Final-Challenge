@@ -92,8 +92,9 @@ if __name__=='__main__':
                           ((pv["street name"] == df_centerline['ST_LABEL']) | (pv['street name'] == df_centerline['FULL_STREE'])) &
                           (((pv['HN_int']%2==1) & (pv['HN_int'] >= df_centerline['L_LOW_int']) & (pv['HN_int'] <= df_centerline['L_HIGH_int'])) |
                           ((pv['HN_int']%2==0) & (pv['HN_int'] >= df_centerline['R_LOW_int']) & (pv['HN_int'] <= df_centerline['R_HIGH_int']))))
-    result_df.count()
+    
     result_df.show()
+    result_df.count()
     pivoted = result_df.groupBy("PHYSICALID").pivot("YEAR",['2015','2016','2017','2018','2019']).count()
     pivoted.show()
     final_df = pivoted.join(broadcast(df_centerline), ['PHYSICALID'], how='right')
@@ -116,4 +117,4 @@ if __name__=='__main__':
     
     final_df = final_df.orderBy('PHYSICALID')
     final_df.show()
-    final_df.write.csv('ee')
+    final_df.write.csv('ff')
