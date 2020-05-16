@@ -4,6 +4,7 @@ from pyspark.sql import SparkSession
 
 import pyspark.sql.functions as f 
 from datetime import datetime
+from pyspark.sql.functions import unix_timestamp, from_unixtime
 from pyspark.sql.functions import year, month, dayofmonth
 from pyspark.sql.window import Window
 from pyspark.sql.functions import lit
@@ -32,7 +33,8 @@ if __name__=='__main__':
     spark = SparkSession(sc)
     pv = spark.read.csv('hdfs:///tmp/bdm/nyc_parking_violation/', header = True,inferSchema = True)
     pv = pv.select('Issue Date', 'Violation County', 'Street Name', 'House Number')
-    pv = pv.withColumn('Date', f.to_date('Issue Date'))#.alias('Year')
+    pv = pv.withColumn('Date', from_unixtime(unix_timestamp('Issue Date', 'MM/dd/yyyy')))
+    #pv = pv.withColumn('Date', f.to_date('Issue Date'))#.alias('Year')
     pv.show()
     pv = pv.withColumn('Year',f.year(pv['Date']))
     pv.show()
