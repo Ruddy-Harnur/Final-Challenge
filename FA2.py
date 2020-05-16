@@ -16,15 +16,15 @@ from itertools import chain
 from pyspark.sql.functions import col, create_map, lit
 
 import numpy as np
-#spark.debug.maxToStringFields=100
-#import statsmodels.api as sm
+
+import statsmodels.api as sm
 
 #import statsmodels.formula.api as smf
 
 # from pyspark.sql.functions import regexp_replace, col
 # from pyspark.ml.regression import LinearRegression
 # from sklearn.linear_model import LinearRegression
-# from pyspark.sql.functions import broadcast
+from pyspark.sql.functions import broadcast
 
 from pyspark.sql.functions import *
 
@@ -87,15 +87,15 @@ if __name__=='__main__':
     df_centerline = df_centerline.select('PHYSICALID', 'ST_LABEL', 'FULL_STREE', 'BOROCODE', 
                                      'L_LOW_int', 'L_HIGH_int', 'R_LOW_int', 'R_HIGH_int')
     df_centerline = df_centerline.withColumn('ST_LABEL', lower(col('ST_LABEL'))).withColumn('FULL_STREE', lower(col('FULL_STREE')))
-    
+    df_centerline.show()
     result_df = pv.join(broadcast(df_centerline),(pv["BOROCODE"]==df_centerline["BOROCODE"]) & 
                           ((pv["street name"] == df_centerline['ST_LABEL']) | (pv['street name'] == df_centerline['FULL_STREE'])) &
                           (((pv['HN_int']%2==1) & (pv['HN_int'] >= df_centerline['L_LOW_int']) & (pv['HN_int'] <= df_centerline['L_HIGH_int'])) |
                           ((pv['HN_int']%2==0) & (pv['HN_int'] >= df_centerline['R_LOW_int']) & (pv['HN_int'] <= df_centerline['R_HIGH_int']))))
                       
-    
+    result_df.show()
     pivoted = result_df.groupBy("PHYSICALID").pivot("YEAR",['2015','2016','2017','2018','2019']).count()
-    
+    pivoted.show()
     final_df = pivoted.join(broadcast(df_centerline), ['PHYSICALID'], how='right')
     final_df = final_df.select('PHYSICALID', '2015', '2016', '2017', '2018', '2019')
     final_df = final_df.na.fill(0)
@@ -115,4 +115,4 @@ if __name__=='__main__':
     
     
     final_df = final_df.orderBy('PHYSICALID')
-    final_df.write.csv('aa')
+    final_df.write.csv('bb')
