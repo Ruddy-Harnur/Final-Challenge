@@ -32,9 +32,10 @@ if __name__=='__main__':
     spark = SparkSession(sc)
     pv = spark.read.csv('hdfs:///tmp/bdm/nyc_parking_violation/', header = True,inferSchema = True)
     pv = pv.select('Issue Date', 'Violation County', 'Street Name', 'House Number')
-    pv = pv.select(f.year(pv['Issue Date']).alias('Year'),
+    pv = pv.select(to_date(Issue Date).alias('Year'))
+    pv = pv.select(f.year(pv['Year']),
                    f.lower(pv['Street Name']).alias('Street Name'))
-    pv = pv.select('Year', (to_date('Year', 'MM/dd/yyyy')))
+    #pv = pv.select('Year', (to_date('Year', 'MM/dd/yyyy')))
     pv = pv.filter(pv['Year']>=2015 & pv['Year']<=2019)              
     pv = pv.na.drop()
     borough_dict = {'NY':1, 'MAN':1, 'MH':1, 'NEWY':1, 'NEW':1, 'Y':1, "NY":1,
