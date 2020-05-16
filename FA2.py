@@ -36,7 +36,7 @@ if __name__=='__main__':
     pv.show()
     pv = pv.withColumn('Year',f.year(pv['Date']))
     pv.show()
-    pv.dtypes)
+    pv.dtypes
     pv = pv.filter(pv["Year"] >= (2015)) \
        .filter(pv["Year"] <= lit(2019))
     pv.show()
