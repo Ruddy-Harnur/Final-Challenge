@@ -32,7 +32,7 @@ if __name__=='__main__':
     spark = SparkSession(sc)
     pv = spark.read.csv('hdfs:///tmp/bdm/nyc_parking_violation/', header = True,inferSchema = True)
     pv = pv.select('Issue Date', 'Violation County', 'Street Name', 'House Number')
-    pv = pv.select(to_date(Issue Date).alias('Year'))
+    pv = pv.select(to_date('Issue Date').alias('Year'))
     pv = pv.select(f.year(pv['Year']),
                    f.lower(pv['Street Name']).alias('Street Name'))
     #pv = pv.select('Year', (to_date('Year', 'MM/dd/yyyy')))
