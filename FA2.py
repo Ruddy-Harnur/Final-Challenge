@@ -37,7 +37,7 @@ if __name__=='__main__':
     #pv = pv.select(f.year(pv['Year']))
     pv = pv.withColumn('street name',f.lower(pv['Street Name']))
     #pv = pv.select('Year', (to_date('Year', 'MM/dd/yyyy')))
-    pv = pv.filter(pv['Year']>=2015 & pv['Year']<=2019)              
+    pv = pv.filter(2015 <= pv['Year'] <=2019)              
     pv = pv.na.drop()
     borough_dict = {'NY':1, 'MAN':1, 'MH':1, 'NEWY':1, 'NEW':1, 'Y':1, "NY":1,
                 'BX':2, 'BRONX':2,
