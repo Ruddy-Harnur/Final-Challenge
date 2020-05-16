@@ -32,14 +32,17 @@ if __name__=='__main__':
     spark = SparkSession(sc)
     pv = spark.read.csv('hdfs:///tmp/bdm/nyc_parking_violation/', header = True,inferSchema = True)
     pv = pv.select('Issue Date', 'Violation County', 'Street Name', 'House Number')
-    pv = pv.withColumn('Date', f.to_date('Issue Date'))#.alias('Year')
-    pv = pv.withColumn('Year',f.year(pv['Date']))
+    #pv = pv.withColumn('Date', f.to_date('Issue Date'))#.alias('Year')
+    #pv = pv.withColumn('Year',f.year(pv['Date']))
     #pv = pv.select(f.year(pv['Year']))
     pv = pv.withColumn('street name',f.lower(pv['Street Name']))
     #pv = pv.select('Year', (to_date('Year', 'MM/dd/yyyy')))
-    dates = (2015, 2019)
-    pv = pv.where(col('Year').between(*dates))
-    #pv = pv.filter(pv['Year']2015 & pv['Year']<=2019)              
+    #dates = (2015, 2019)
+    #pv = pv.where(col('Year').between(*dates))
+    #pv = pv.filter(pv['Year']2015 & pv['Year']<=2019)
+    pv = pv.withColumn('Year',(pv['Issue Date'].substr(-4,4)))
+    pv = pv.filter(pv['Year']==2015 | pv['Year']==2016 | pv['Year']==2017 | pv['Year']==2018 | pv['Year']==2019)
+    #pv = pv.filter(
     pv = pv.na.drop()
     borough_dict = {'NY':1, 'MAN':1, 'MH':1, 'NEWY':1, 'NEW':1, 'Y':1, "NY":1,
                 'BX':2, 'BRONX':2,
