@@ -41,7 +41,7 @@ if __name__=='__main__':
     #pv = pv.where(col('Year').between(*dates))
     #pv = pv.filter(pv['Year']2015 & pv['Year']<=2019)
     pv = pv.withColumn('Year',(pv['Issue Date'].substr(-4,4)))
-    pv = pv.filter(pv['Year']==2015 | pv['Year']==2016 | pv['Year']==2017 | pv['Year']==2018 | pv['Year']==2019)
+    pv = pv.filter(pv['Year']=='2015' | pv['Year']=='2016' | pv['Year']=='2017' | pv['Year']=='2018' | pv['Year']=='2019')
     #pv = pv.filter(
     pv = pv.na.drop()
     borough_dict = {'NY':1, 'MAN':1, 'MH':1, 'NEWY':1, 'NEW':1, 'Y':1, "NY":1,
