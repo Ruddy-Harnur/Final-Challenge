@@ -124,4 +124,4 @@ if __name__=='__main__':
                                                result_df['2018'], result_df['2019']))
                                                
     result_df = result_df.orderBy('PHYSICALID')
-    result_df.write.csv('hh')
+    result_df.write.csv(sys.argv[1])
