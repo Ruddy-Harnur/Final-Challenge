@@ -92,7 +92,7 @@ if __name__=='__main__':
                           (((pv['HN_int']%2!=0) & (pv['HN_int'] >= centerline['L_LOW_int']) & (pv['HN_int'] <= centerline['L_HIGH_int'])) |
                           ((pv['HN_int']%2==0) & (pv['HN_int'] >= centerline['R_LOW_int']) & (pv['HN_int'] <= centerline['R_HIGH_int']))))
                           
-    result_df = result_df.join(broadcast(centerline), ['PHYSICALID'], how='outer')                      
+    result_df = result_df.join(broadcast(centerline), ['PHYSICALID'], how='left')                      
     result_df = result_df.select('PHYSICALID', '2015', '2016', '2017', '2018', '2019')
     result_df = result_df.orderBy('PHYSICALID')
     result_df =result_df.groupBy('PHYSICALID').agg({'2015' : 'sum', '2016':'sum', '2017':'sum', '2018':'sum', '2019':'sum'})
