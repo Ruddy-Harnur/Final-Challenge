@@ -35,16 +35,16 @@ if __name__=='__main__':
     pv = pv.select('Issue Date', 'Violation County', 'Street Name', 'House Number')
     pv = pv.withColumn('Date', from_unixtime(unix_timestamp('Issue Date', 'MM/dd/yyyy')))
     #pv = pv.withColumn('Date', f.to_date('Issue Date'))#.alias('Year')
-    pv.show()
+    #pv.show()
     pv = pv.withColumn('Year',f.year(pv['Date']))
-    pv.show()
+    #pv.show()
     pv.dtypes
     pv = pv.filter(pv["Year"] >= (2015)) \
        .filter(pv["Year"] <= (2019))
-    pv.show()
+    #pv.show()
     #pv = pv.select(f.year(pv['Year']))
     pv = pv.na.drop()
-    pv.show()
+    #pv.show()
     pv = pv.withColumn('street name',f.lower(pv['Street Name']))
     pv.show()
 
@@ -89,18 +89,18 @@ if __name__=='__main__':
                           (((pv['HN_int']%2==1) & (pv['HN_int'] >= df_centerline['L_LOW_int']) & (pv['HN_int'] <= df_centerline['L_HIGH_int'])) |
                           ((pv['HN_int']%2==0) & (pv['HN_int'] >= df_centerline['R_LOW_int']) & (pv['HN_int'] <= df_centerline['R_HIGH_int']))))
     
-    result_df.show()
+    #result_df.show()
     result_df = result_df.select('PHYSICALID', '2015', '2016', '2017', '2018', '2019')
     result_df = result_df.orderBy('PHYSICALID')
     result_df =result_df.groupBy('PHYSICALID').agg({'2015' : 'sum', '2016':'sum', '2017':'sum', '2018':'sum', '2019':'sum'})
-    result_df.show(10)
+    result_df.show()
     result_df = result_df.withColumnRenamed('sum(2018)', '2018')
     result_df = result_df.withColumnRenamed('sum(2015)', '2015')
     result_df = result_df.withColumnRenamed('sum(2019)', '2019')
     result_df = result_df.withColumnRenamed('sum(2016)', '2016')
     result_df = result_df.withColumnRenamed('sum(2017)', '2017')
     result_df = result_df.select('PHYSICALID', '2015', '2016', '2017', '2018', '2019')
-    result_df.show(10)
+    result_df.show()
     
     result_df = result_df.join(broadcast(df_centerline), ['PHYSICALID'], how='right')
     result_df = result_df.select('PHYSICALID', '2015', '2016', '2017', '2018', '2019')
@@ -122,4 +122,4 @@ if __name__=='__main__':
     
     result_df = result_df.orderBy('PHYSICALID')
     result_df.show()
-    result_df.write.csv('aa')
+    result_df.write.csv('bb')
