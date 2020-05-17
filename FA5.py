@@ -50,6 +50,7 @@ if __name__=='__main__':
     pv = pv.withColumn("BOROCODE", mapping_expr.getItem(col("Violation County")))
     pv = pv.withColumn("HN_int",(f.regexp_replace("House Number", "-", "")))
     pv = pv.withColumn("HN_int",regexp_replace(col("HN_int"), " ", ""))
+    pv = pv.withColumn("HN_int", f.regexp_replace(f.col("HN_int"), "[ABCDEFGHIJKLMNOPQRSTUVWXYZ]", ""))
     pv = pv.withColumn("HN_int", pv["HN_int"].cast(IntegerType()))
     pv = pv.na.drop()
     pv = pv.select('Year','BOROCODE', 'street name', 'HN_int')
@@ -89,7 +90,6 @@ if __name__=='__main__':
     
     centerline = st_label.union(full_stree).distinct()
     
-    #pv_random
     
     
     result_df = pv.join(broadcast(centerline),(pv["BOROCODE"]==centerline["BOROCODE"]) & 
