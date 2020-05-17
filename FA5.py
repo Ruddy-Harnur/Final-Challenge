@@ -94,7 +94,7 @@ if __name__=='__main__':
     
     result_df = pv.join(broadcast(centerline),(pv["BOROCODE"]==centerline["BOROCODE"]) & 
                           ((pv["street name"] == centerline['ST_LABEL'])) &
-                          (((pv['HN_int']%2==1) & (pv['HN_int'] >= centerline['L_LOW_int']) & (pv['HN_int'] <= centerline['L_HIGH_int'])) |
+                          (((pv['HN_int']%2!=0) & (pv['HN_int'] >= centerline['L_LOW_int']) & (pv['HN_int'] <= centerline['L_HIGH_int'])) |
                           ((pv['HN_int']%2==0) & (pv['HN_int'] >= centerline['R_LOW_int']) & (pv['HN_int'] <= centerline['R_HIGH_int']))))
                           
                           
